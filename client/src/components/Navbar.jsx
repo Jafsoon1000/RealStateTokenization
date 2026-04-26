@@ -1,8 +1,12 @@
-import React from 'react';
 import { Wallet, Landmark, ChevronDown } from 'lucide-react';
+import useStore from '../store/useStore';
 
-const Navbar = ({ account, connectWallet }) => {
+
+const Navbar = () => {
+  const { account, connectWallet } = useStore();
+  
   const formatAddress = (addr) => {
+    if (!addr) return '';
     return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
   };
 

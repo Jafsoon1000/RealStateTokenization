@@ -1,7 +1,10 @@
-import React from 'react';
 import { MapPin, TrendingUp, Users, ShieldCheck } from 'lucide-react';
+import useStore from '../store/useStore';
 
-const PropertyCard = ({ property, isConnected }) => {
+
+const PropertyCard = ({ property }) => {
+  const { account } = useStore();
+  const isConnected = !!account;
   const { title, image_url, location, total_value, token_price, available_tokens } = property;
 
   const formatCurrency = (val) => {

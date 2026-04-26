@@ -1,91 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { ethers } from 'ethers';
+import React, { useEffect } from 'react';
+import useStore from './store/useStore';
+
 import Navbar from './components/Navbar';
 import PropertyCard from './components/PropertyCard';
 import { BarChart3, Globe, Shield, Zap } from 'lucide-react';
 
 function App() {
-  const [properties, setProperties] = useState([]);
-  const [account, setAccount] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { properties, account, loading, fetchProperties, checkIfWalletIsConnected, connectWallet } = useStore();
 
   useEffect(() => {
     fetchProperties();
     checkIfWalletIsConnected();
-  }, []);
-
-  const fetchProperties = async () => {
-    try {
-      const { data } = await axios.get('http://localhost:5000/api/properties');
-      setProperties(data);
-    } catch (error) {
-      console.error('Error fetching properties:', error);
-      // Fallback mock data if server is not running
-      setProperties([
-        {
-          _id: '1',
-          title: 'Skyline Office Tower',
-          image_url: '/images/berlin_office_tower.png',
-          location: 'Berlin, Germany',
-          total_value: 125000000,
-          token_price: 1000,
-          available_tokens: 125000,
-        },
-        {
-          _id: '2',
-          title: 'Waterfront Luxury Suites',
-          image_url: '/images/frankfurt_luxury_apartment.png',
-          location: 'Frankfurt, Germany',
-          total_value: 85000000,
-          token_price: 500,
-          available_tokens: 170000,
-        },
-        {
-          _id: '3',
-          title: 'Grand Munich Retail Plaza',
-          image_url: '/images/munich_retail_space_modern.png',
-          location: 'Munich, Germany',
-          total_value: 45000000,
-          token_price: 250,
-          available_tokens: 180000,
-        }
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const checkIfWalletIsConnected = async () => {
-    try {
-      if (!window.ethereum) return;
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const accounts = await provider.listAccounts();
-      if (accounts.length > 0) {
-        setAccount(accounts[0].address);
-      }
-    } catch (error) {
-      console.error('Error checking wallet connection:', error);
-    }
-  };
-
-  const connectWallet = async () => {
-    try {
-      if (!window.ethereum) {
-        alert('Please install MetaMask!');
-        return;
-      }
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const accounts = await provider.send('eth_requestAccounts', []);
-      setAccount(accounts[0]);
-    } catch (error) {
-      console.error('Error connecting wallet:', error);
-    }
-  };
+  }, [fetchProperties, checkIfWalletIsConnected]);
 
   return (
     <div className="min-h-screen bg-dark">
-      <Navbar account={account} connectWallet={connectWallet} />
+      <Navbar />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
@@ -156,7 +86,6 @@ function App() {
               <PropertyCard 
                 key={property._id} 
                 property={property} 
-                isConnected={!!account}
               />
             ))}
           </div>
