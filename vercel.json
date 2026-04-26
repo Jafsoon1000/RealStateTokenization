@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "public": false,
   "builds": [
     {
       "src": "client/package.json",
       "use": "@vercel/static-build",
       "config": { "distDir": "dist" }
+    },
+    {
+      "src": "server/server.js",
+      "use": "@vercel/node"
     }
   ],
   "rewrites": [
