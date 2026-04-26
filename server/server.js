@@ -6,29 +6,35 @@ const propertyRoutes = require('./routes/propertyRoutes.js');
 
 dotenv.config();
 
-connectDB();
-
 const app = express();
 
-const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+// Allow all origins during development/testing; restrict in production via FRONTEND_URL
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*',
   optionsSuccessStatus: 200,
-};
+}));
 
-app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('API is running...');
+  res.json({ status: 'API is running' });
 });
 
-app.use('/api/properties', propertyRoutes);
+// Connect to DB then handle routes
+app.use('/api/properties', async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    res.status(503).json({ message: 'Database connection failed', error: error.message });
+  }
+}, propertyRoutes);
 
 const PORT = process.env.PORT || 5000;
 
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
-    console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
   });
 }
 
