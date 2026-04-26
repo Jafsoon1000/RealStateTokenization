@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "RWA Tokenization Dashboard Server",
   "main": "server.js",
-  "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
@@ -17,7 +16,6 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "mongoose": "^9.5.0",
-    "nodemon": "^3.1.14",
     "zod": "^4.3.6"
   }
 }

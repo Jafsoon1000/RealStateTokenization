@@ -1,8 +1,8 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import connectDB from './config/db.js';
-import propertyRoutes from './routes/propertyRoutes.js';
+const express = require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const connectDB = require('./config/db.js');
+const propertyRoutes = require('./routes/propertyRoutes.js');
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ const app = express();
 
 const corsOptions = {
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
@@ -32,4 +32,4 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-export default app;
+module.exports = app;

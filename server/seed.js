@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import Property from './models/Property.js';
-import connectDB from './config/db.js';
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const Property = require('./models/Property.js');
+const connectDB = require('./config/db.js');
 
 dotenv.config();
 
