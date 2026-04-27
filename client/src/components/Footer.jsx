@@ -1,4 +1,4 @@
-import { Send, MessageSquare, Twitter, Github, Linkedin } from 'lucide-react';
+import { Send, MessageSquare, X, GitBranch, Link2 } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -64,10 +64,10 @@ const Footer = () => {
           <div>
             <h4 className="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-4">Community</h4>
             <ul className="space-y-2.5">
-              <li><a href="#" className="text-gray-400 text-sm hover:text-white transition-colors flex items-center gap-2"><Twitter size={14} /> Twitter</a></li>
+              <li><a href="#" className="text-gray-400 text-sm hover:text-white transition-colors flex items-center gap-2"><X size={14} /> X (Twitter)</a></li>
               <li><a href="#" className="text-gray-400 text-sm hover:text-white transition-colors flex items-center gap-2"><MessageSquare size={14} /> Discord</a></li>
-              <li><a href="#" className="text-gray-400 text-sm hover:text-white transition-colors flex items-center gap-2"><Github size={14} /> GitHub</a></li>
-              <li><a href="#" className="text-gray-400 text-sm hover:text-white transition-colors flex items-center gap-2"><Linkedin size={14} /> LinkedIn</a></li>
+              <li><a href="#" className="text-gray-400 text-sm hover:text-white transition-colors flex items-center gap-2"><GitBranch size={14} /> GitHub</a></li>
+              <li><a href="#" className="text-gray-400 text-sm hover:text-white transition-colors flex items-center gap-2"><Link2 size={14} /> LinkedIn</a></li>
             </ul>
           </div>
         </div>

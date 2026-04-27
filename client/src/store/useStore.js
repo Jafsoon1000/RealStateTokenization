@@ -66,7 +66,7 @@ const useStore = create((set, get) => ({
           {
             _id: '5',
             title: 'Düsseldorf MedienHafen Complex',
-            image_url: '/images/berlin_office_tower.png',
+            image_url: '/images/dusseldorf_medienhafen.png',
             location: 'Düsseldorf, Germany',
             total_value: 95000000,
             token_price: 750,
@@ -77,7 +77,7 @@ const useStore = create((set, get) => ({
           {
             _id: '6',
             title: 'Stuttgart Tech Campus',
-            image_url: '/images/frankfurt_luxury_apartment.png',
+            image_url: '/images/stuttgart_tech_campus.png',
             location: 'Stuttgart, Germany',
             total_value: 160000000,
             token_price: 1500,
