@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db.js');
 const propertyRoutes = require('./routes/propertyRoutes.js');
+const transactionRoutes = require('./routes/transactionRoutes.js');
 
 dotenv.config();
 
@@ -29,6 +30,15 @@ app.use('/api/properties', async (req, res, next) => {
     res.status(503).json({ message: 'Database connection failed', error: error.message });
   }
 }, propertyRoutes);
+
+app.use('/api/transactions', async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    res.status(503).json({ message: 'Database connection failed', error: error.message });
+  }
+}, transactionRoutes);
 
 const PORT = process.env.PORT || 5000;
 

@@ -1,11 +1,11 @@
-import { MapPin, TrendingUp, Users, ShieldCheck } from 'lucide-react';
+import { MapPin, TrendingUp, ShieldCheck, Percent } from 'lucide-react';
 import useStore from '../store/useStore';
 
 
 const PropertyCard = ({ property }) => {
   const { account } = useStore();
   const isConnected = !!account;
-  const { title, image_url, location, total_value, token_price, available_tokens } = property;
+  const { title, image_url, location, total_value, token_price, available_tokens, yield_percentage, property_type } = property;
 
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('en-US', {
@@ -13,6 +13,17 @@ const PropertyCard = ({ property }) => {
       currency: 'USD',
       maximumFractionDigits: 0,
     }).format(val);
+  };
+
+  const totalTokens = Math.round(total_value / token_price);
+  const soldPercentage = totalTokens > 0 ? Math.round(((totalTokens - available_tokens) / totalTokens) * 100) : 0;
+
+  const typeLabel = {
+    commercial: 'Commercial',
+    residential: 'Residential',
+    industrial: 'Industrial',
+    retail: 'Retail',
+    'mixed-use': 'Mixed-Use',
   };
 
   return (
@@ -25,6 +36,9 @@ const PropertyCard = ({ property }) => {
         />
         <div className="absolute top-3 left-3 bg-dark/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest text-white border border-white/10">
           Verified Asset
+        </div>
+        <div className="absolute top-3 right-3 bg-dark/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest text-bloomberg-orange border border-bloomberg-orange/20">
+          {typeLabel[property_type] || 'Commercial'}
         </div>
         <div className="absolute bottom-3 right-3 bg-bloomberg-orange text-black px-2 py-1 rounded text-xs font-bold">
           {available_tokens > 0 ? 'AVAILABLE' : 'SOLD OUT'}
@@ -41,27 +55,38 @@ const PropertyCard = ({ property }) => {
           {location}
         </div>
         
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-3 gap-3 mb-6">
           <div className="bg-dark-accent/50 p-3 rounded-lg border border-gray-800">
-            <p className="text-[10px] text-gray-500 uppercase font-bold mb-1">Total Valuation</p>
+            <p className="text-[10px] text-gray-500 uppercase font-bold mb-1">Valuation</p>
             <p className="text-sm font-mono text-white">{formatCurrency(total_value)}</p>
           </div>
           <div className="bg-dark-accent/50 p-3 rounded-lg border border-gray-800">
             <p className="text-[10px] text-gray-500 uppercase font-bold mb-1">Token Price</p>
             <p className="text-sm font-mono text-bloomberg-green">{formatCurrency(token_price)}</p>
           </div>
+          <div className="bg-dark-accent/50 p-3 rounded-lg border border-gray-800">
+            <p className="text-[10px] text-gray-500 uppercase font-bold mb-1">Est. Yield</p>
+            <p className="text-sm font-mono text-bloomberg-orange flex items-center gap-1">
+              <TrendingUp size={12} />
+              {yield_percentage || '—'}%
+            </p>
+          </div>
         </div>
         
         <div className="space-y-3 mb-6">
           <div className="flex justify-between text-xs">
-            <span className="text-gray-400">Availability</span>
-            <span className="text-white font-mono">{available_tokens.toLocaleString()} Tokens Left</span>
+            <span className="text-gray-400">Token Sale Progress</span>
+            <span className="text-white font-mono">{soldPercentage}% Sold</span>
           </div>
           <div className="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
             <div 
-              className="bg-bloomberg-orange h-full rounded-full" 
-              style={{ width: '65%' }}
+              className="bg-gradient-to-r from-bloomberg-orange to-bloomberg-green h-full rounded-full transition-all duration-700" 
+              style={{ width: `${soldPercentage}%` }}
             ></div>
+          </div>
+          <div className="flex justify-between text-[10px] text-gray-600 font-mono">
+            <span>{available_tokens.toLocaleString()} tokens left</span>
+            <span>{totalTokens.toLocaleString()} total</span>
           </div>
         </div>
         

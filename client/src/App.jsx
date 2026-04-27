@@ -3,6 +3,11 @@ import useStore from './store/useStore';
 
 import Navbar from './components/Navbar';
 import PropertyCard from './components/PropertyCard';
+import HowItWorks from './components/HowItWorks';
+import StatsBar from './components/StatsBar';
+import TransactionHistory from './components/TransactionHistory';
+import SecurityFeatures from './components/SecurityFeatures';
+import Footer from './components/Footer';
 import { BarChart3, Globe, Shield, Zap } from 'lucide-react';
 
 function App() {
@@ -66,8 +71,11 @@ function App() {
           </div>
         </div>
 
+        {/* Platform Stats */}
+        <StatsBar />
+
         {/* Property Grid */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 mt-12">
           <h2 className="text-2xl font-bold text-white">Institutional Inventory</h2>
           <div className="flex gap-2">
             <div className="h-2 w-2 rounded-full bg-bloomberg-green animate-pulse self-center"></div>
@@ -90,10 +98,19 @@ function App() {
             ))}
           </div>
         )}
+
+        {/* How It Works */}
+        <HowItWorks />
+
+        {/* Security & Compliance */}
+        <SecurityFeatures />
+
+        {/* Transaction History */}
+        <TransactionHistory />
       </main>
       
-      {/* Footer / Ticker */}
-      <footer className="border-t border-gray-800 bg-dark-lighter mt-12 py-6 overflow-hidden">
+      {/* Ticker Bar */}
+      <div className="border-t border-gray-800 bg-dark py-4 overflow-hidden">
         <div className="flex gap-12 animate-infinite-scroll whitespace-nowrap px-4">
           <div className="flex items-center gap-2">
             <span className="ticker-text text-gray-400">ETH/USD</span>
@@ -115,6 +132,10 @@ function App() {
             <span className="ticker-text text-gray-400">GLOBAL-RWA-INDEX</span>
             <span className="ticker-text text-bloomberg-green">1,420.50 +0.85%</span>
           </div>
+          <div className="flex items-center gap-2">
+            <span className="ticker-text text-gray-400">HAMBURG-LOG-4</span>
+            <span className="ticker-text text-bloomberg-green">2,105.30 +1.8%</span>
+          </div>
           {/* Duplicate for seamless loop */}
           <div className="flex items-center gap-2">
             <span className="ticker-text text-gray-400">ETH/USD</span>
@@ -124,8 +145,15 @@ function App() {
             <span className="ticker-text text-gray-400">BERLIN-OFFICE-1</span>
             <span className="ticker-text text-white">1,042.15 +0.4%</span>
           </div>
+          <div className="flex items-center gap-2">
+            <span className="ticker-text text-gray-400">STUTTGART-TECH-6</span>
+            <span className="ticker-text text-bloomberg-green">1,512.00 +0.95%</span>
+          </div>
         </div>
-      </footer>
+      </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

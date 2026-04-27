@@ -26,6 +26,19 @@ const propertySchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    yield_percentage: {
+      type: Number,
+      default: 0,
+    },
+    property_type: {
+      type: String,
+      enum: ['commercial', 'residential', 'industrial', 'retail', 'mixed-use'],
+      default: 'commercial',
+    },
+    description: {
+      type: String,
+      default: '',
+    },
   },
   {
     timestamps: true,

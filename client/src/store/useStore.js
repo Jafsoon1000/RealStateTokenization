@@ -27,6 +27,8 @@ const useStore = create((set, get) => ({
             total_value: 125000000,
             token_price: 1000,
             available_tokens: 125000,
+            yield_percentage: 8.5,
+            property_type: 'commercial',
           },
           {
             _id: '2',
@@ -36,6 +38,8 @@ const useStore = create((set, get) => ({
             total_value: 85000000,
             token_price: 500,
             available_tokens: 170000,
+            yield_percentage: 6.2,
+            property_type: 'residential',
           },
           {
             _id: '3',
@@ -45,7 +49,42 @@ const useStore = create((set, get) => ({
             total_value: 45000000,
             token_price: 250,
             available_tokens: 180000,
-          }
+            yield_percentage: 11.3,
+            property_type: 'retail',
+          },
+          {
+            _id: '4',
+            title: 'Hamburg Logistics Terminal',
+            image_url: '/images/hamburg_logistics_hub.png',
+            location: 'Hamburg, Germany',
+            total_value: 210000000,
+            token_price: 2000,
+            available_tokens: 105000,
+            yield_percentage: 14.7,
+            property_type: 'industrial',
+          },
+          {
+            _id: '5',
+            title: 'Düsseldorf MedienHafen Complex',
+            image_url: '/images/berlin_office_tower.png',
+            location: 'Düsseldorf, Germany',
+            total_value: 95000000,
+            token_price: 750,
+            available_tokens: 126667,
+            yield_percentage: 9.8,
+            property_type: 'mixed-use',
+          },
+          {
+            _id: '6',
+            title: 'Stuttgart Tech Campus',
+            image_url: '/images/frankfurt_luxury_apartment.png',
+            location: 'Stuttgart, Germany',
+            total_value: 160000000,
+            token_price: 1500,
+            available_tokens: 106667,
+            yield_percentage: 10.1,
+            property_type: 'commercial',
+          },
         ]
       });
     } finally {

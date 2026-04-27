@@ -1,20 +1,39 @@
 # Jafsoon RWA Tokenization Dashboard
 
-![Version](https://img.shields.io/badge/version-1.1.0-orange)
+![Version](https://img.shields.io/badge/version-2.0.0-orange)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Platform](https://img.shields.io/badge/platform-Ethereum-gray)
+![Status](https://img.shields.io/badge/status-Live-brightgreen)
 
 **Jafsoon** is a premium, institutional-grade Real-World Asset (RWA) tokenization platform. It allows users to browse, analyze, and invest in fractionalized commercial real estate assets directly on the blockchain.
 
+---
+
 ## 🚀 Features
 
+### Core Platform
 - **Institutional Inventory**: Access high-yield commercial real estate assets previously reserved for institutional investors.
-- **Fractional Ownership**: Invest in properties with as little as $1,000 using stablecoins or ETH.
-- **Centralized State Management**: High-performance state management using Zustand for a seamless user experience.
+- **Fractional Ownership**: Invest in properties with as little as $250 using stablecoins or ETH.
 - **Web3 Integration**: Seamless wallet connection via MetaMask and ethers.js.
 - **Bloomberg-Style UI**: High-performance, dark-mode interface designed for professional traders and investors.
-- **Asset Verification**: Transparent on-chain verification of underlying physical assets.
-- **Secure API**: Robust input validation and restricted CORS for institutional-grade security.
+
+### Investment Tools
+- **Estimated Yield Display**: Each property shows projected annual yield percentage to inform investment decisions.
+- **Dynamic Token Sale Progress**: Real-time progress bars showing sold vs. available token supply.
+- **Property Type Classification**: Assets categorized as Commercial, Residential, Industrial, Retail, or Mixed-Use.
+- **Transaction History**: Live feed of all platform transactions with status tracking.
+
+### Security & Compliance
+- **Smart Contract Audited**: CertiK and OpenZeppelin audited token contracts.
+- **Escrow Protection**: Multi-sig escrow until property closing is finalized on-chain.
+- **Legal Compliance**: SPV entity structuring with SEC/MiFID II compliance.
+- **KYC/AML Verification**: Institutional-grade identity verification.
+- **Decentralized Custody**: Ethereum-recorded ownership with IPFS-backed document storage.
+- **Real-Time Reporting**: Track rental income, occupancy, and valuations.
+
+### Platform Analytics
+- **Platform Stats Dashboard**: Live metrics including TVL, active investors, properties tokenized, and average returns.
+- **Ticker Bar**: Bloomberg-style scrolling price ticker for all tokenized assets.
 
 ## 🛠 Tech Stack
 
@@ -35,20 +54,35 @@
 ## 📂 Project Structure
 
 ```text
-├── client/              # React frontend application
+├── client/                  # React frontend application
 │   ├── src/
-│   │   ├── components/  # Reusable UI components
-│   │   ├── store/       # Zustand global state (useStore.js)
-│   │   └── App.jsx      # Main application logic
-│   ├── .env             # Client environment variables
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx           # Navigation with wallet connection
+│   │   │   ├── PropertyCard.jsx     # Asset card with yield & progress
+│   │   │   ├── HowItWorks.jsx       # 4-step investment process
+│   │   │   ├── StatsBar.jsx         # Platform analytics metrics
+│   │   │   ├── SecurityFeatures.jsx # Security & compliance grid
+│   │   │   ├── TransactionHistory.jsx # Live transaction feed
+│   │   │   └── Footer.jsx           # Links, newsletter, socials
+│   │   ├── store/
+│   │   │   └── useStore.js          # Zustand global state
+│   │   ├── App.jsx                  # Main application layout
+│   │   └── index.css                # Design system & theme
+│   ├── .env                         # Client environment variables
 │   └── tailwind.config.js
-├── server/              # Node.js Express backend
-│   ├── config/          # Database configuration
-│   ├── models/          # Mongoose schemas
-│   ├── routes/          # API endpoints with Zod validation
-│   ├── .env             # Server environment variables
-│   └── seed.js          # Database seeding script
-└── README.md            # Project documentation
+├── server/                  # Node.js Express backend
+│   ├── config/
+│   │   └── db.js                    # MongoDB connection (serverless-safe)
+│   ├── models/
+│   │   ├── Property.js              # Property schema (with yield, type)
+│   │   └── Transaction.js           # Transaction record schema
+│   ├── routes/
+│   │   ├── propertyRoutes.js        # CRUD + buy endpoints
+│   │   └── transactionRoutes.js     # Transaction history & stats
+│   ├── .env                         # Server environment variables
+│   └── seed.js                      # Database seeding (6 properties)
+├── vercel.json              # Vercel deployment config
+└── README.md                # Project documentation
 ```
 
 ## ⚙️ Getting Started
@@ -103,10 +137,20 @@
 
 ## 🛣 API Endpoints
 
+### Properties
+
 | Method | Endpoint | Description | Validation |
 |--------|----------|-------------|------------|
 | GET | `/api/properties` | Fetch all tokenized properties | None |
+| GET | `/api/properties/:id` | Fetch a single property by ID | MongoDB ObjectId |
 | POST | `/api/properties/buy` | Simulate buying a property fraction | Zod Schema |
+
+### Transactions
+
+| Method | Endpoint | Description | Query Params |
+|--------|----------|-------------|--------------|
+| GET | `/api/transactions` | Fetch recent transactions | `?wallet=0x...` |
+| GET | `/api/transactions/stats` | Platform-wide analytics | None |
 
 ### Buy Token Validation (Zod)
 The `/api/properties/buy` endpoint requires the following JSON body:
@@ -116,6 +160,31 @@ The `/api/properties/buy` endpoint requires the following JSON body:
   "tokensToBuy": "number (positive integer)",
   "walletAddress": "string (0x...)"
 }
+```
+
+### Stats Response Format
+```json
+{
+  "totalTransactions": 142,
+  "totalVolume": 1250000,
+  "totalTokensBought": 8420,
+  "uniqueInvestors": 67
+}
+```
+
+## 🏗 Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌──────────────┐
+│  React Frontend │────▶│  Express API    │────▶│  MongoDB     │
+│  (Vite + TW4)   │     │  (Zod + CORS)   │     │  (Atlas)     │
+└─────────────────┘     └─────────────────┘     └──────────────┘
+        │                        │
+        │                        │
+   ┌────▼────┐            ┌──────▼──────┐
+   │ MetaMask│            │  Vercel     │
+   │ Wallet  │            │  Serverless │
+   └─────────┘            └─────────────┘
 ```
 
 ## 🛡 License

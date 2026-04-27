@@ -1,6 +1,7 @@
 const express = require('express');
 const { z } = require('zod');
 const Property = require('../models/Property.js');
+const Transaction = require('../models/Transaction.js');
 
 const router = express.Router();
 
@@ -32,6 +33,27 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @desc    Fetch single property by ID
+// @route   GET /api/properties/:id
+// @access  Public
+router.get('/:id', async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({ message: 'Property not found' });
+    }
+
+    res.json(property);
+  } catch (error) {
+    console.error(`[GET PROPERTY ERROR]: ${error.message}`);
+    res.status(500).json({
+      message: 'Failed to fetch property',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+    });
+  }
+});
+
 // @desc    Simulate buying tokens with validation
 // @route   POST /api/properties/buy
 // @access  Public (Wallet connected)
@@ -53,11 +75,24 @@ router.post('/buy', async (req, res) => {
     property.available_tokens -= tokensToBuy;
     await property.save();
 
+    const txHash = `0x${Math.random().toString(16).slice(2)}${Math.random().toString(16).slice(2)}`;
+
+    // Record the transaction
+    await Transaction.create({
+      property: property._id,
+      walletAddress,
+      tokensBought: tokensToBuy,
+      totalCost: tokensToBuy * property.token_price,
+      txHash,
+      status: 'confirmed',
+    });
+
     res.json({
       message: 'Purchase successful',
-      tx_hash: `0x${Math.random().toString(16).slice(2)}...${Math.random().toString(16).slice(2)}`,
+      tx_hash: txHash,
       property_title: property.title,
       tokens_bought: tokensToBuy,
+      total_cost: tokensToBuy * property.token_price,
       buyer: walletAddress,
     });
   } catch (error) {
