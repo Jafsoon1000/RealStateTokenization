@@ -117,20 +117,24 @@ function App() {
             <span className="ticker-text text-bloomberg-green">$2,451.20 +1.2%</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="ticker-text text-gray-400">BERLIN-OFFICE-1</span>
-            <span className="ticker-text text-white">1,042.15 +0.4%</span>
+            <span className="ticker-text text-gray-400">TOKYO-DATA-7</span>
+            <span className="ticker-text text-bloomberg-green">2,512.40 +1.8%</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="ticker-text text-gray-400">FRANKFURT-WATER-2</span>
-            <span className="ticker-text text-bloomberg-green">512.40 +2.1%</span>
+            <span className="ticker-text text-gray-400">LONDON-RETAIL-8</span>
+            <span className="ticker-text text-white">1,204.15 +0.3%</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="ticker-text text-gray-400">MUNICH-RETAIL-3</span>
-            <span className="ticker-text text-red-500">248.90 -0.2%</span>
+            <span className="ticker-text text-gray-400">NYC-PENT-9</span>
+            <span className="ticker-text text-bloomberg-green">5,042.90 +2.5%</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="ticker-text text-gray-400">GLOBAL-RWA-INDEX</span>
-            <span className="ticker-text text-bloomberg-green">1,420.50 +0.85%</span>
+            <span className="ticker-text text-gray-400">DUBAI-HUB-10</span>
+            <span className="ticker-text text-bloomberg-green">1,520.50 +1.4%</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="ticker-text text-gray-400">SINGAPORE-11</span>
+            <span className="ticker-text text-bloomberg-green">2,005.30 +0.7%</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="ticker-text text-gray-400">HAMBURG-LOG-4</span>
@@ -142,12 +146,12 @@ function App() {
             <span className="ticker-text text-bloomberg-green">$2,451.20 +1.2%</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="ticker-text text-gray-400">BERLIN-OFFICE-1</span>
-            <span className="ticker-text text-white">1,042.15 +0.4%</span>
+            <span className="ticker-text text-gray-400">TOKYO-DATA-7</span>
+            <span className="ticker-text text-bloomberg-green">2,512.40 +1.8%</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="ticker-text text-gray-400">STUTTGART-TECH-6</span>
-            <span className="ticker-text text-bloomberg-green">1,512.00 +0.95%</span>
+            <span className="ticker-text text-gray-400">NYC-PENT-9</span>
+            <span className="ticker-text text-bloomberg-green">5,042.90 +2.5%</span>
           </div>
         </div>
       </div>
