@@ -11,12 +11,14 @@ const useStore = create((set, get) => ({
   fetchProperties: async () => {
     set({ loading: true });
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-      const { data } = await axios.get(`${apiUrl}/properties`);
+      // In production (Vercel), VITE_API_URL is not set so we use a relative path
+      // which works with Vercel's rewrites. Locally, we fall back to localhost.
+      const apiUrl = import.meta.env.VITE_API_URL || '/api';
+      const { data } = await axios.get(`${apiUrl}/properties`, { timeout: 10000 });
       set({ properties: data });
     } catch (error) {
       console.error('Error fetching properties:', error);
-      // Fallback mock data
+      // Fallback mock data with all 11 properties
       set({
         properties: [
           {
@@ -85,12 +87,68 @@ const useStore = create((set, get) => ({
             yield_percentage: 10.1,
             property_type: 'commercial',
           },
+          {
+            _id: '7',
+            title: 'Tokyo Data Node',
+            image_url: '/images/tokyo_data_center.png',
+            location: 'Tokyo, Japan',
+            total_value: 350000000,
+            token_price: 2500,
+            available_tokens: 140000,
+            yield_percentage: 12.5,
+            property_type: 'industrial',
+          },
+          {
+            _id: '8',
+            title: 'London Regents Retail',
+            image_url: '/images/london_retail_plaza.png',
+            location: 'London, UK',
+            total_value: 120000000,
+            token_price: 1200,
+            available_tokens: 100000,
+            yield_percentage: 7.8,
+            property_type: 'retail',
+          },
+          {
+            _id: '9',
+            title: 'NYC Penthouse Collective',
+            image_url: '/images/nyc_luxury_penthouse.png',
+            location: 'New York City, USA',
+            total_value: 280000000,
+            token_price: 5000,
+            available_tokens: 56000,
+            yield_percentage: 5.5,
+            property_type: 'residential',
+          },
+          {
+            _id: '10',
+            title: 'Dubai Sky Hub',
+            image_url: '/images/dubai_mixed_use_tower.png',
+            location: 'Dubai, UAE',
+            total_value: 195000000,
+            token_price: 1500,
+            available_tokens: 130000,
+            yield_percentage: 9.2,
+            property_type: 'mixed-use',
+          },
+          {
+            _id: '11',
+            title: 'Singapore Tech Valley',
+            image_url: '/images/singapore_tech_campus.png',
+            location: 'Singapore',
+            total_value: 210000000,
+            token_price: 2000,
+            available_tokens: 105000,
+            yield_percentage: 8.9,
+            property_type: 'commercial',
+          },
         ]
       });
     } finally {
       set({ loading: false });
     }
   },
+
 
   checkIfWalletIsConnected: async () => {
     try {
