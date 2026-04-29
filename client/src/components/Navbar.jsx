@@ -1,15 +1,10 @@
 import { Wallet, Landmark, ChevronDown } from 'lucide-react';
 import useStore from '../store/useStore';
-
+import { formatAddress } from '../utils/formatters';
 
 const Navbar = () => {
   const { account, connectWallet } = useStore();
   
-  const formatAddress = (addr) => {
-    if (!addr) return '';
-    return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
-  };
-
   return (
     <nav className="border-b border-gray-800 bg-dark/80 backdrop-blur-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

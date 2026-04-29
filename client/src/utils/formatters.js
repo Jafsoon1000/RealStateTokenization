@@ -15,3 +15,8 @@ export const formatDate = (dateStr) => {
     minute: '2-digit',
   });
 };
+
+export const formatAddress = (addr) => {
+  if (!addr) return '';
+  return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
+};
