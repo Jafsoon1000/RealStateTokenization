@@ -1,19 +1,11 @@
 import { MapPin, TrendingUp, ShieldCheck, Percent } from 'lucide-react';
 import useStore from '../store/useStore';
-
+import { formatCurrency } from '../utils/formatters';
 
 const PropertyCard = ({ property }) => {
   const { account } = useStore();
   const isConnected = !!account;
   const { title, image_url, location, total_value, token_price, available_tokens, yield_percentage, property_type } = property;
-
-  const formatCurrency = (val) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0,
-    }).format(val);
-  };
 
   const totalTokens = Math.round(total_value / token_price);
   const soldPercentage = totalTokens > 0 ? Math.round(((totalTokens - available_tokens) / totalTokens) * 100) : 0;
