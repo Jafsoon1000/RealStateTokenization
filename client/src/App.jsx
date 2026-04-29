@@ -11,12 +11,20 @@ import Footer from './components/Footer';
 import { BarChart3, Globe, Shield, Zap } from 'lucide-react';
 
 function App() {
-  const { properties, account, loading, fetchProperties, checkIfWalletIsConnected, connectWallet } = useStore();
+  const { properties, account, loading, theme, fetchProperties, checkIfWalletIsConnected, connectWallet } = useStore();
 
   useEffect(() => {
     fetchProperties();
     checkIfWalletIsConnected();
   }, [fetchProperties, checkIfWalletIsConnected]);
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
+  }, [theme]);
 
   return (
     <div className="min-h-screen bg-dark">

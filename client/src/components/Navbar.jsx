@@ -1,9 +1,9 @@
-import { Wallet, Landmark, ChevronDown } from 'lucide-react';
+import { Wallet, Landmark, ChevronDown, Sun, Moon } from 'lucide-react';
 import useStore from '../store/useStore';
 import { formatAddress } from '../utils/formatters';
 
 const Navbar = () => {
-  const { account, connectWallet } = useStore();
+  const { account, connectWallet, theme, toggleTheme } = useStore();
   
   return (
     <nav className="border-b border-gray-800 bg-dark/80 backdrop-blur-md sticky top-0 z-50">
@@ -22,6 +22,13 @@ const Navbar = () => {
           </div>
           
           <div className="flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full bg-dark-accent border border-gray-800 text-gray-400 hover:text-white transition-colors"
+            >
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            
             <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-dark-accent border border-gray-800 rounded-full">
               <div className="w-2 h-2 rounded-full bg-bloomberg-green animate-pulse"></div>
               <span className="text-xs font-mono text-gray-400 uppercase">Ethereum Mainnet</span>

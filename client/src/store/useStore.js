@@ -6,8 +6,11 @@ const useStore = create((set, get) => ({
   account: null,
   properties: [],
   loading: true,
+  theme: 'dark',
   
   // Actions
+  toggleTheme: () => set((state) => ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),
+
   fetchProperties: async () => {
     set({ loading: true });
     try {
