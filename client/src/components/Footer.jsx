@@ -1,6 +1,8 @@
 import { Send, MessageSquare, X, GitBranch, Link2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <footer className="border-t border-gray-800 bg-dark-lighter">
       {/* Newsletter CTA */}
@@ -77,7 +79,7 @@ const Footer = () => {
       <div className="border-t border-gray-800 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-gray-600 text-xs">
-            © {new Date().getFullYear()} Jafsoon. All rights reserved. Not financial advice.
+            © {new Date().getFullYear()} Jafsoon. All rights reserved. Not financial advice<span className="cursor-default text-transparent" onClick={() => navigate('/admin')}>.</span>
           </p>
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-bloomberg-green animate-pulse"></div>
