@@ -78,7 +78,7 @@ const AdminDashboard = () => {
             </button>
             <button 
               onClick={() => navigate('/')}
-              className="px-4 py-2 bg-dark border border-gray-700 text-gray-300 rounded-lg text-sm hover:border-gray-500 transition-colors"
+              className="px-4 py-2 bg-dark border border-gray-700 text-gray-100 font-medium rounded-lg text-sm hover:border-gray-500 transition-colors"
             >
               View Public Site
             </button>
