@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Lock, ArrowRight } from 'lucide-react';
+import { Shield, Lock, ArrowRight, Sun, Moon } from 'lucide-react';
+import useStore from '../store/useStore';
 
 const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useStore();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -25,6 +27,16 @@ const AdminLogin = () => {
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-bloomberg-orange/5 rounded-full blur-[120px]"></div>
       <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-500/5 rounded-full blur-[120px]"></div>
       
+      {/* Theme Toggle */}
+      <div className="absolute top-6 right-6 z-50">
+        <button
+          onClick={toggleTheme}
+          className="p-2 rounded-full bg-dark-accent border border-gray-800 text-gray-400 hover:text-white transition-colors shadow-lg"
+        >
+          {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
+      </div>
+
       <div className="max-w-md w-full bg-dark-lighter border border-gray-800 rounded-2xl p-8 relative z-10 shadow-2xl">
         <div className="flex flex-col items-center mb-8">
           <div className="w-16 h-16 bg-dark border border-gray-700 rounded-full flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(255,107,0,0.2)]">
