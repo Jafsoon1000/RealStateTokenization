@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Home, Users, DollarSign, Settings, Activity, FileText } from 'lucide-react';
+import { LogOut, Home, Users, DollarSign, Settings, Activity, FileText, Sun, Moon } from 'lucide-react';
+import useStore from '../store/useStore';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useStore();
 
   useEffect(() => {
     // Simple auth check
@@ -67,12 +69,20 @@ const AdminDashboard = () => {
             <h1 className="text-3xl font-bold text-white">System Overview</h1>
             <p className="text-gray-500 text-sm mt-1">Welcome back, Owner. Here is your platform's current status.</p>
           </div>
-          <button 
-            onClick={() => navigate('/')}
-            className="px-4 py-2 bg-dark border border-gray-700 text-gray-300 rounded-lg text-sm hover:border-gray-500 transition-colors"
-          >
-            View Public Site
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full bg-dark-accent border border-gray-800 text-gray-400 hover:text-white transition-colors"
+            >
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            <button 
+              onClick={() => navigate('/')}
+              className="px-4 py-2 bg-dark border border-gray-700 text-gray-300 rounded-lg text-sm hover:border-gray-500 transition-colors"
+            >
+              View Public Site
+            </button>
+          </div>
         </header>
 
         {/* Top Stats */}
