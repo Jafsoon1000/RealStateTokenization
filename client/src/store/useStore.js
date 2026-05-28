@@ -6,10 +6,14 @@ const useStore = create((set, get) => ({
   account: null,
   properties: [],
   loading: true,
-  theme: 'dark',
+  theme: localStorage.getItem('theme') || 'dark',
   
   // Actions
-  toggleTheme: () => set((state) => ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),
+  toggleTheme: () => set((state) => {
+    const newTheme = state.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', newTheme);
+    return { theme: newTheme };
+  }),
 
   fetchProperties: async () => {
     set({ loading: true });
