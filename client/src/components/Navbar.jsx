@@ -1,23 +1,50 @@
+import { Link, useLocation } from 'react-router-dom';
 import { Wallet, Landmark, ChevronDown, Sun, Moon } from 'lucide-react';
 import useStore from '../store/useStore';
 import { formatAddress } from '../utils/formatters';
 
 const Navbar = () => {
   const { account, connectWallet, theme, toggleTheme } = useStore();
+  const { pathname } = useLocation();
   
   return (
     <nav className="border-b border-gray-800 bg-dark/80 backdrop-blur-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center gap-2">
-            <Landmark className="text-bloomberg-orange w-8 h-8" />
-            <span className="text-xl font-bold tracking-tighter text-white uppercase">
-              Jaf<span className="text-bloomberg-orange">soon</span>
-            </span>
-            <div className="ml-8 hidden md:flex items-center space-x-6">
-              <a href="#" className="text-bloomberg-orange text-sm font-medium border-b-2 border-bloomberg-orange pb-5 mt-5">Marketplace</a>
-              <a href="#" className="text-gray-400 text-sm font-medium hover:text-white transition-colors">Portfolio</a>
-              <a href="#" className="text-gray-400 text-sm font-medium hover:text-white transition-colors">Analytics</a>
+          <div className="flex items-center gap-2 h-full">
+            <Link to="/" className="flex items-center gap-2">
+              <Landmark className="text-bloomberg-orange w-8 h-8" />
+              <span className="text-xl font-bold tracking-tighter text-white uppercase">
+                Jaf<span className="text-bloomberg-orange">soon</span>
+              </span>
+            </Link>
+            <div className="ml-8 hidden md:flex items-center space-x-6 h-full">
+              <Link 
+                to="/" 
+                className={`text-sm font-semibold h-full flex items-center border-b-2 transition-all duration-200 ${
+                  pathname === '/' 
+                    ? 'text-bloomberg-orange border-bloomberg-orange font-bold' 
+                    : 'text-gray-400 border-transparent hover:text-white hover:border-gray-700'
+                }`}
+              >
+                Marketplace
+              </Link>
+              <a 
+                href="#" 
+                className="text-sm font-semibold h-full flex items-center border-b-2 border-transparent text-gray-500 cursor-not-allowed hover:text-gray-400 transition-all duration-200"
+              >
+                Portfolio
+              </a>
+              <Link 
+                to="/analytics" 
+                className={`text-sm font-semibold h-full flex items-center border-b-2 transition-all duration-200 ${
+                  pathname === '/analytics' 
+                    ? 'text-bloomberg-orange border-bloomberg-orange font-bold' 
+                    : 'text-gray-400 border-transparent hover:text-white hover:border-gray-700'
+                }`}
+              >
+                Analytics
+              </Link>
             </div>
           </div>
           
