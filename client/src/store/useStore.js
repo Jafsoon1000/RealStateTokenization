@@ -21,13 +21,19 @@ const useStore = create((set, get) => ({
       // In production (Vercel), VITE_API_URL is not set so we use a relative path
       // which works with Vercel's rewrites. Locally, we fall back to localhost.
       const apiUrl = import.meta.env.VITE_API_URL || '/api';
-      const { data } = await axios.get(`${apiUrl}/properties`, { timeout: 10000 });
+      const { data } = await axios.get(`${apiUrl}/properties`, { timeout: 8000 });
       set({ properties: data });
+      localStorage.setItem('properties', JSON.stringify(data));
     } catch (error) {
-      console.error('Error fetching properties:', error);
-      // Fallback mock data with all 11 properties
-      set({
-        properties: [
+      console.error('Error fetching properties from server:', error);
+      
+      // Fallback: Check localStorage first for any saved/added properties
+      const stored = localStorage.getItem('properties');
+      if (stored) {
+        set({ properties: JSON.parse(stored) });
+      } else {
+        // Fallback static mock data with all 11 properties
+        const defaultProperties = [
           {
             _id: '1',
             title: 'Skyline Office Tower',
@@ -38,6 +44,7 @@ const useStore = create((set, get) => ({
             available_tokens: 125000,
             yield_percentage: 8.5,
             property_type: 'commercial',
+            description: 'A premium institutional office space in the heart of Berlin.',
           },
           {
             _id: '2',
@@ -49,6 +56,7 @@ const useStore = create((set, get) => ({
             available_tokens: 170000,
             yield_percentage: 6.2,
             property_type: 'residential',
+            description: 'High-end apartments along the beautiful riverfront of Frankfurt.',
           },
           {
             _id: '3',
@@ -60,6 +68,7 @@ const useStore = create((set, get) => ({
             available_tokens: 180000,
             yield_percentage: 11.3,
             property_type: 'retail',
+            description: 'A high-traffic, modern shopping plaza in urban Munich.',
           },
           {
             _id: '4',
@@ -71,6 +80,7 @@ const useStore = create((set, get) => ({
             available_tokens: 105000,
             yield_percentage: 14.7,
             property_type: 'industrial',
+            description: 'A state-of-the-art port logistics hub facilitating international trade.',
           },
           {
             _id: '5',
@@ -82,6 +92,7 @@ const useStore = create((set, get) => ({
             available_tokens: 126667,
             yield_percentage: 9.8,
             property_type: 'mixed-use',
+            description: 'Elegant mixed-use commercial and creative hub in Düsseldorf.',
           },
           {
             _id: '6',
@@ -93,6 +104,7 @@ const useStore = create((set, get) => ({
             available_tokens: 106667,
             yield_percentage: 10.1,
             property_type: 'commercial',
+            description: 'A research & development commercial park with top-tier technology tenants.',
           },
           {
             _id: '7',
@@ -104,6 +116,7 @@ const useStore = create((set, get) => ({
             available_tokens: 140000,
             yield_percentage: 12.5,
             property_type: 'industrial',
+            description: 'Hyperscale secure data center in the technological core of Tokyo.',
           },
           {
             _id: '8',
@@ -115,6 +128,7 @@ const useStore = create((set, get) => ({
             available_tokens: 100000,
             yield_percentage: 7.8,
             property_type: 'retail',
+            description: 'A prestigious boutique shopping corridor in London.',
           },
           {
             _id: '9',
@@ -126,6 +140,7 @@ const useStore = create((set, get) => ({
             available_tokens: 56000,
             yield_percentage: 5.5,
             property_type: 'residential',
+            description: 'Ultra-exclusive residential suites overlooking Central Park.',
           },
           {
             _id: '10',
@@ -137,6 +152,7 @@ const useStore = create((set, get) => ({
             available_tokens: 130000,
             yield_percentage: 9.2,
             property_type: 'mixed-use',
+            description: 'A futuristic skyscraper with luxury office spaces and residential penthouses.',
           },
           {
             _id: '11',
@@ -148,14 +164,86 @@ const useStore = create((set, get) => ({
             available_tokens: 105000,
             yield_percentage: 8.9,
             property_type: 'commercial',
+            description: 'Eco-friendly sustainable commercial hub for Asian tech giants.',
           },
-        ]
-      });
+        ];
+        set({ properties: defaultProperties });
+        localStorage.setItem('properties', JSON.stringify(defaultProperties));
+      }
     } finally {
       set({ loading: false });
     }
   },
 
+  addProperty: async (propertyData) => {
+    const currentProperties = get().properties;
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || '/api';
+      const { data } = await axios.post(`${apiUrl}/properties`, propertyData);
+      
+      const updated = [data, ...currentProperties];
+      set({ properties: updated });
+      localStorage.setItem('properties', JSON.stringify(updated));
+      return { success: true, data };
+    } catch (error) {
+      console.warn('Backend connection failed, adding property locally:', error);
+      const newProperty = {
+        _id: `local_${Date.now()}`,
+        ...propertyData,
+      };
+      const updated = [newProperty, ...currentProperties];
+      set({ properties: updated });
+      localStorage.setItem('properties', JSON.stringify(updated));
+      return { success: true, data: newProperty };
+    }
+  },
+
+  editProperty: async (id, propertyData) => {
+    const currentProperties = get().properties;
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || '/api';
+      let updatedData = { ...propertyData, _id: id };
+      
+      if (!id.toString().startsWith('local_')) {
+        const { data } = await axios.put(`${apiUrl}/properties/${id}`, propertyData);
+        updatedData = data;
+      }
+      
+      const updated = currentProperties.map((p) => (p._id === id ? updatedData : p));
+      set({ properties: updated });
+      localStorage.setItem('properties', JSON.stringify(updated));
+      return { success: true, data: updatedData };
+    } catch (error) {
+      console.warn('Backend connection failed, editing property locally:', error);
+      const updatedData = { ...propertyData, _id: id };
+      const updated = currentProperties.map((p) => (p._id === id ? updatedData : p));
+      set({ properties: updated });
+      localStorage.setItem('properties', JSON.stringify(updated));
+      return { success: true, data: updatedData };
+    }
+  },
+
+  deleteProperty: async (id) => {
+    const currentProperties = get().properties;
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || '/api';
+      
+      if (!id.toString().startsWith('local_')) {
+        await axios.delete(`${apiUrl}/properties/${id}`);
+      }
+      
+      const updated = currentProperties.filter((p) => p._id !== id);
+      set({ properties: updated });
+      localStorage.setItem('properties', JSON.stringify(updated));
+      return { success: true };
+    } catch (error) {
+      console.warn('Backend connection failed, deleting property locally:', error);
+      const updated = currentProperties.filter((p) => p._id !== id);
+      set({ properties: updated });
+      localStorage.setItem('properties', JSON.stringify(updated));
+      return { success: true };
+    }
+  },
 
   checkIfWalletIsConnected: async () => {
     try {
@@ -186,3 +274,4 @@ const useStore = create((set, get) => ({
 }));
 
 export default useStore;
+

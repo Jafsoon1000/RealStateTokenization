@@ -108,4 +108,86 @@ router.post('/buy', async (req, res) => {
   }
 });
 
+// Property Input Schema for Admin validation
+const propertyInputSchema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  image_url: z.string().min(1, 'Image URL is required'),
+  location: z.string().min(1, 'Location is required'),
+  total_value: z.number().positive('Total value must be positive'),
+  token_price: z.number().positive('Token price must be positive'),
+  available_tokens: z.number().int().nonnegative('Available tokens must be non-negative'),
+  yield_percentage: z.number().nonnegative('Yield percentage must be non-negative'),
+  property_type: z.enum(['commercial', 'residential', 'industrial', 'retail', 'mixed-use']),
+  description: z.string().optional().default(''),
+});
+
+// @desc    Create a new property
+// @route   POST /api/properties
+// @access  Admin
+router.post('/', async (req, res) => {
+  try {
+    const validatedData = propertyInputSchema.parse(req.body);
+    const newProperty = await Property.create(validatedData);
+    res.status(201).json(newProperty);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        message: 'Validation failed',
+        errors: error.errors,
+      });
+    }
+    console.error(`[CREATE PROPERTY ERROR]: ${error.message}`);
+    res.status(500).json({ message: 'Failed to create property asset' });
+  }
+});
+
+// @desc    Update an existing property
+// @route   PUT /api/properties/:id
+// @access  Admin
+router.put('/:id', async (req, res) => {
+  try {
+    const validatedData = propertyInputSchema.parse(req.body);
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({ message: 'Property not found' });
+    }
+
+    // Update fields
+    Object.assign(property, validatedData);
+    await property.save();
+
+    res.json(property);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        message: 'Validation failed',
+        errors: error.errors,
+      });
+    }
+    console.error(`[UPDATE PROPERTY ERROR]: ${error.message}`);
+    res.status(500).json({ message: 'Failed to update property asset' });
+  }
+});
+
+// @desc    Delete a property
+// @route   DELETE /api/properties/:id
+// @access  Admin
+router.delete('/:id', async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({ message: 'Property not found' });
+    }
+
+    await Property.deleteOne({ _id: req.params.id });
+    res.json({ message: 'Property successfully removed from inventory' });
+  } catch (error) {
+    console.error(`[DELETE PROPERTY ERROR]: ${error.message}`);
+    res.status(500).json({ message: 'Failed to delete property asset' });
+  }
+});
+
 module.exports = router;
+
