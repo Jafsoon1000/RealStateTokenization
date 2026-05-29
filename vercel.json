@@ -13,6 +13,9 @@
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "server/server.js" },
-    { "source": "/(.*)", "destination": "client/$1" }
+    { "source": "/assets/(.*)", "destination": "client/assets/$1" },
+    { "source": "/images/(.*)", "destination": "client/images/$1" },
+    { "source": "/favicon.ico", "destination": "client/favicon.ico" },
+    { "source": "/((?!api|assets|images|favicon.ico).*)", "destination": "client/index.html" }
   ]
 }
